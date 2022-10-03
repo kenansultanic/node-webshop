@@ -8,6 +8,7 @@ CREATE TABLE users
     status   varchar(20)
 );
 
+
 CREATE TABLE blocked_users
 (
     user_id      int,
