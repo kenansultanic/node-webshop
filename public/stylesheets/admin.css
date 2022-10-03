@@ -1,0 +1,18 @@
+
+.lookup-heading {
+    cursor: pointer;
+    color: cornflowerblue;
+    padding: 15px 0;
+}
+
+.active-heading {
+    text-decoration: underline cornflowerblue;
+}
+
+.categories-table, .interests-table {
+    display: none;
+}
+
+.display {
+    display: table;
+}

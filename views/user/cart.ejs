@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Profil</title>
+    <meta charset="UTF-8"/>
+    <link rel='stylesheet' href='/stylesheets/header.css'/>
+    <link rel='stylesheet' href='/stylesheets/user.css'/>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="/public/javascripts/header.js"></script>
+</head>
+<body>
+<header>
+    <%- include('user-header.ejs') %>
+</header>
+<main>
+    <div class="row">
+        <div class="position-relative">
+            <div class="toast float-end cart-toast">
+                <div class="toast-header">
+                    <strong class="me-auto">Notifikacija</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body">
+                    <p id="toast-text"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <section class="h-100 h-custom">
+                <div class="container py-5 h-100">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                        <div class="col">
+                            <div class="card bg-light">
+                                <div class="card-body p-4">
+                                    <div class="row">
+                                        <div class="col-lg-7">
+                                            <h5 class="mb-3"><a href="/user/<%= id %>" class="text-body">Nastavi sa
+                                                    kupovinom</a></h5>
+                                            <hr>
+
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <div>
+                                                    <p class="mb-1">Korpa</p>
+                                                    <p class="mb-0">Imate <span
+                                                                id="cart-quantity"><%= cart.length %></span> artikla u
+                                                        svojoj korpi</p>
+                                                </div>
+                                            </div>
+
+                                            <% if(cart.length === 0) { %>
+                                                <div class="card mb-3">
+                                                    <div class="card-body">
+                                                        <div class="d-flex justify-content-center">
+                                                            Korpa je prazna
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            <% } else { %>
+
+                                                <% cart.forEach(product => { %>
+                                                    <div class="card mb-3" id="<%= product.id %>">
+                                                        <div class="card-body">
+                                                            <div class="d-flex justify-content-between">
+                                                                <div class="d-flex flex-row align-items-center">
+                                                                    <div>
+                                                                        <img
+                                                                                src="<%= product.images[0].img_url %>"
+                                                                                class="img-fluid rounded-3"
+                                                                                alt="Shopping item"
+                                                                                style="width: 65px;">
+                                                                    </div>
+                                                                    <div class="ms-3">
+                                                                        <h5><%= product.name %></h5>
+                                                                        <p class="small mb-0"><%= product.description.slice(0, 20) %>
+                                                                            ...</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="d-flex flex-row align-items-center">
+                                                                    <div style="width: 50px;">
+                                                                        <h5 class="fw-normal mb-0"><%= product.quantity %>
+                                                                            x</h5>
+                                                                    </div>
+                                                                    <div style="width: 80px;">
+                                                                        <h5 class="mb-0"><%= product.price %>€</h5>
+                                                                    </div>
+                                                                    <a class="delete-from-cart"
+                                                                       onclick="deleteFromCart(<%= product.id %>)">Ukloni</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <% }) %>
+                                            <% } %>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="card bg-light rounded-3">
+                                                <div class="card-body">
+
+                                                    <form class="mt-4">
+                                                        <div class="form-outline form-white mb-4">
+                                                            <input type="text" id="address"
+                                                                   class="form-control form-control-lg" size="17"
+                                                                   required/>
+                                                            <label class="form-label" for="address">Adresa</label>
+                                                        </div>
+
+                                                        <div class="form-outline form-white mb-4">
+                                                            <input type="text" id="phone"
+                                                                   class="form-control form-control-lg" size="17"
+                                                                   required/>
+                                                            <label class="form-label" for="phone">Broj telefona</label>
+                                                        </div>
+
+                                                        <div class="row mb-4">
+                                                            <div class="col-md-6">
+                                                                <div class="form-outline form-white">
+                                                                    <input type="text" id="city"
+                                                                           class="form-control form-control-lg" size="7"
+                                                                           required/>
+                                                                    <label class="form-label" for="city">Grad</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-outline form-white">
+                                                                    <input type="text" id="zip"
+                                                                           class="form-control form-control-lg"
+                                                                           required/>
+                                                                    <label class="form-label" for="zip">ZIP kod</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-4">
+                                                            <div class="col-md-6">
+                                                                <div class="form-outline form-white">
+                                                                    <input type="text"
+                                                                           class="form-control form-control-lg" size="7"
+                                                                           id="coupon"/>
+                                                                    <label class="form-label" for="coupon">Imate
+                                                                        kupon?</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <button type="button"
+                                                                        id="check-coupon"
+                                                                        class="btn btn-secondary btn-block btn-lg"
+                                                                        onclick="checkCoupon()">
+                                                                    Primjeni
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                    </form>
+
+                                                    <hr class="my-4">
+
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2">Cijena</p>
+                                                        <p class="mb-2"><span id="price-sub"><%= price.price || 0 %></span>€</p>
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2">Poštarina</p>
+                                                        <p class="mb-2" id="shipping"><%= price.shipping || 0 %>€</p>
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between mb-4">
+                                                        <p class="mb-2">Ukupno</p>
+                                                        <p class="mb-2"><span
+                                                                    id="price"><%= (price.price + price.shipping) || 0 %></span>€
+                                                        </p>
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-secondary btn-block btn-lg"
+                                                            onclick="placeOrder()">
+                                                        Naruči
+                                                    </button>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+<footer>
+    <%- include('../footer.ejs') %>
+</footer>
+<script>
+    let cart = JSON.parse('<%- JSON.stringify(cart) %>')
+
+    const deleteFromCart = id => {
+        axios.post(`/user/cart/delete/${id}`, {})
+            .then(response => {
+                $(`#${id}`).remove()
+                const cartQuantity = $('#cart-quantity')
+                cartQuantity.text(parseInt(cartQuantity.text()) - 1)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    const placeOrder = () => {
+        if (!validateOrder()) {
+            $('#toast-text').text('U narudžbi možete imate samo proizvode od istog trgovca')
+            $('.toast').toast('show')
+            return
+        }
+
+        const address = $('#address').val()
+        const phone = $('#phone').val()
+        const city = $('#city').val()
+        const zip = $('#zip').val()
+        const price = $('#price').text()
+
+        if (address === '' || phone === '' || city === '' || zip === '') {
+            $('#toast-text').text('Morate unijeti podatke za dostavu')
+            $('.toast').toast('show')
+            return
+        }
+
+        axios.post(`/user/place-order/<%- id %>`, {
+            cart: cart,
+            address: address,
+            phone: phone,
+            city: city,
+            zip: zip,
+            price: price
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    $('#toast-text').text('Narudžba kreirana')
+                    $('.toast').toast('show')
+                    setInterval(() => location.reload(), 500)
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    const validateOrder = () => {
+        let isValid = true
+        cart.forEach(itemStoreId => {
+            if (itemStoreId.product_id !== cart[0].product_id)
+                isValid = false
+        })
+        return isValid
+    }
+
+    const checkCoupon = () => {
+        const coupon = $('#coupon').val()
+        if (coupon === '')
+            return
+        axios.get(`/user/check-coupon/${coupon}`, {})
+            .then(response => {
+                if (response.data.coupon) {
+                    cart = cart.map(item => {
+                        item.price = item.price - item.price * response.data.coupon.discount / 100
+                        return item
+                    })
+                    const subTotal = cart.reduce(((total, item) => total + item.price), 0)
+                    $('#price-sub').text(subTotal)
+                    $('#price').text(subTotal + parseInt($('#shipping').text()))
+                    $('#coupon').attr('readonly', true)
+                    $('#check-coupon').attr('disabled', true)
+                }
+                else {
+                    $('#toast-text').text('Kupon se ne koristi')
+                    $('.toast').toast('show')
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+
+    }
+
+</script>
+</body>
+</html>

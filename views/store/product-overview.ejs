@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Svi artikli</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet' href='/stylesheets/header.css'/>
+    <link rel='stylesheet' href='/stylesheets/store.css'/>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <script defer src="/public/javascripts/header.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<header>
+    <%- include('store-header.ejs') %>
+</header>
+<main>
+    <div class="row">
+        <div class="position-relative">
+            <div class="toast float-end cart-toast">
+                <div class="toast-header">
+                    <strong class="me-auto">Notifikacija</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body">
+                    <p id="toast-text"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10 offset-md-1 bg-light">
+            <div id="demo" class="carousel slide" data-bs-ride="carousel" style="width: 50%; margin: auto">
+
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                    <% if (images[1]) { %>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                    <% } %>
+                    <% if (images[2]) { %>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                    <% } %>
+                </div>
+
+                <div class="carousel-inner inner">
+                    <div class="carousel-item active">
+                        <img src="<%= images[0].img_url %>" alt="First image" class="d-block carousel-image">
+                    </div>
+                    <% if (images[1]) { %>
+                        <div class="carousel-item">
+                            <img src="<%= images[1].img_url %>" alt="Second image" class="d-block carousel-image">
+                        </div>
+                    <% } %>
+                    <% if (images[2]) { %>
+                        <div class="carousel-item">
+                            <img src="<%= images[2].img_url %>" alt="Third image" class="d-block carousel-image">
+                        </div>
+                    <% } %>
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon carousel-slide"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                    <span class="carousel-control-next-icon carousel-slide"></span>
+                </button>
+            </div>
+            <div class="d-flex justify-content-around store-links">
+                <a href="/store/product/update-images/<%= id %>/<%= productId %>">Izmjeni slike</a>
+                <a href="/store/product-reviews/<%= productId %>/<%= id %>" class="product-review">Recenzije</a>
+            </div>
+            <div class="product-info">
+                <form>
+                    <label for="name">Ime: </label>
+                    <input type="text" class="form-control overview-input" id="name" name="name"
+                           value="<%= product.name %>" readonly>
+                    <label for="keywords">Ključne riječi: </label>
+                    <input type="text" class="form-control overview-input" id="keywords" name="keywords"
+                           value="<%= keywords %>" readonly>
+                    <label for="quantity">Količina: </label>
+                    <input type="number" class="form-control overview-input" id="quantity" name="quantity" min="1"
+                           value="<%= product.quantity %>" readonly>
+                    <label for="price">Cijena: </label>
+                    <input type="number" class="form-control overview-input" id="price" name="price" min="0"
+                           value="<%= product.price %>" readonly>
+                    <label for="category" class=>Kategorije:</label>
+                    <select class="form-select" id="category" name="categories" multiple required disabled>
+                        <% categories.forEach(category => { %>
+                            <option value="<%= category.id %>" selected>
+                                <%= category.category %>
+                            </option>
+                        <% }) %>
+                    </select>
+                    <label for="description">Opis: </label>
+                    <textarea name="description" id="description" maxlength="400" class="form-control overview-input"
+                              readonly><%= product.description %>
+                    </textarea>
+                </form>
+                <div class="text-center">
+                    <button class="btn btn-secondary update-product-btn" id="alter-btn">Izmjeni artikal</button>
+                    <button class="btn btn-secondary update-product-btn" id="update-btn">Spasi izmjene</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <%- include('../footer.ejs') %>
+</footer>
+</body>
+<script>
+
+    const allCategories = JSON.parse('<%- JSON.stringify(allCategories) %>')
+
+    $('#alter-btn').click(() => {
+        const categoriesTag = $('#category')
+        $('.overview-input').attr('readonly', false)
+        categoriesTag.attr('disabled', false)
+        $('#alter-btn').hide()
+        $('#update-btn').show()
+
+        const categories = categoriesTag.val().map(category => parseInt(category))
+        categoriesTag.empty()
+        $.each(allCategories, (key, value) => {
+            let option = $('<option></option>').attr('value', value.id).text(value.category)
+            if (categories.includes(value.id))
+                option.attr('selected', true)
+
+            categoriesTag.append(option)
+        })
+    })
+
+    $('#update-btn').click(() => {
+        const name = $('#name').val()
+        const keywords = $('#keywords').val()
+        const price = $('#price').val()
+        const quantity = $('#quantity').val()
+        const description = $('#description').val()
+        const categories = $('#category').val()
+
+        axios.post('/store/update-product/<%- productId %>', {
+            name: name,
+            keywords: keywords,
+            price: price,
+            quantity: quantity,
+            description: description,
+            categories: categories
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    $('#toast-text').text('Promjene spašene')
+                    $('.toast').toast('show')
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    })
+</script>
+</html>

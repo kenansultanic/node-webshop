@@ -1,0 +1,65 @@
+.chat .chat-history {
+    padding: 20px;
+    border-bottom: 2px solid #fff;
+    min-height: 70vh;
+}
+
+.chat .chat-history ul {
+    padding: 0;
+}
+
+.chat .chat-history ul li {
+    list-style: none;
+    margin-bottom: 30px
+}
+
+.chat .chat-history ul li:last-child {
+    margin-bottom: 0;
+}
+
+.chat .chat-history .message-data {
+    margin-bottom: 15px
+}
+
+
+.chat .chat-history .message-data-time {
+    color: #434651;
+    padding-left: 6px
+}
+
+.chat .chat-history .message {
+    color: #444;
+    padding: 18px 20px;
+    line-height: 26px;
+    font-size: 16px;
+    border-radius: 7px;
+    display: inline-block;
+    position: relative
+}
+
+
+.chat .chat-history .my-message {
+    background: #efefef
+}
+
+
+.chat .chat-history .other-message {
+    background: #e8f1f3;
+    text-align: right
+}
+
+.chat .chat-message {
+    padding: 20px
+}
+
+.chat .chat-time {
+    font-size: smaller;
+}
+
+.chat-list {
+    min-height: 80vh;
+}
+
+.send-message {
+    cursor: pointer;
+}

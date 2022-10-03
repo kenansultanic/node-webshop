@@ -1,0 +1,45 @@
+<div class="page-wrap">
+    <div class="nav-style">
+        <div class="mobile-view">
+            <div class="mobile-view-header">
+                <div class="mobile-view-close">
+                    <i class="fa fa-times js-toggle"></i>
+                </div>
+            </div>
+            <div class="mobile-view-body"></div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container py-2 px-2">
+                <a class="navbar-brand" href="#">E-trgovina</a>
+
+                <div class="d-inline-block d-lg-none ml-md-0 ml-auto py-3">
+                    <i class="fa fa-bars js-toggle" style="font-size: 25px; color: white"></i>
+                </div>
+
+                <div class="d-none d-lg-block">
+                    <ul class="navbar-nav ml-auto js-clone-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/<%= id %>">Početna stranica</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/profile/<%= id %>">Moj profil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/orders/<%= id %>">Narudžbe</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/cart/<%= id %>">Korpa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/chats/<%= id %>">Razgovori</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout/<%= id %>">Odjavi se</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>

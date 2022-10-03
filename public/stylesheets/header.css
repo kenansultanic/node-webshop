@@ -1,0 +1,93 @@
+.page-wrap:before{
+    transition: .3s all ease-in-out;
+    background: rgba(0, 0, 0, 0.6);
+    content: "";
+    position: absolute;
+    z-index: 2000;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.off-view .page-wrap{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.off-view .page-wrap:before{
+    opacity: 0.5;
+    visibility: visible;
+}
+
+.mobile-view{
+    width:300px;
+    position: fixed;
+    right: 0;
+    z-index: 2000;
+    padding-top: 20px;
+    background: white;
+    height: calc(100vh);
+    transform: translateX(110%);
+    box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1);
+    transition: .3s all ease-in-out;
+}
+
+.off-view .mobile-view{
+    transform: translateX(0%);
+}
+.mobile-view .mobile-view-header{
+    width: 100%;
+    float: left;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.mobile-view .mobile-view-header .mobile-view-close{
+    float: right;
+    margin-top: 8px;
+    margin-right: 10px;
+}
+
+
+.mobile-view .mobile-view-header .mobile-view-close i{
+    font-size: 30px;
+    display: inline-block;
+    padding-right: 10px;
+    line-height: 1;
+    cursor: pointer;
+    transition: .3s all ease;
+}
+
+.mobile-view .mobile-view-body{
+    overflow: scroll;
+    position: relative;
+    height: calc(100vh - 52px);
+    padding: 50px 20px 150px;
+}
+
+.mobile-view .clone-view{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: relative;
+}
+
+.mobile-view .clone-view a{
+    padding: 10px 20px;
+    display: block;
+    position: relative;
+    color: black;
+    text-align: center;
+    font-size: 25px;
+    text-transform: uppercase;
+}
+
+.footer-text {
+    color: white;
+}

@@ -1,0 +1,45 @@
+<div class="page-wrap">
+    <div class="nav-style">
+        <div class="mobile-view">
+            <div class="mobile-view-header">
+                <div class="mobile-view-close">
+                    <i class="fa fa-times js-toggle"></i>
+                </div>
+            </div>
+            <div class="mobile-view-body"></div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container py-2 px-2">
+                <a class="navbar-brand" href="#">Admin</a>
+
+                <div class="d-inline-block d-lg-none ml-md-0 ml-auto py-3">
+                    <i class="fa fa-bars js-toggle" style="font-size: 25px; color: white"></i>
+                </div>
+
+                <div class="d-none d-lg-block">
+                    <ul class="navbar-nav ml-auto js-clone-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/statistics/<%= id %>">Statistika</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/users/<%= id %>">Korisnici</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/lookup-tables/<%= id %>">Lookup tabele</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/coupons/<%= id %>">Kuponi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/chats/<%= id %>">Razgovori</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout/<%= id %>">Odjavi se</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Profil</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet' href='/stylesheets/header.css'/>
+    <link rel='stylesheet' href='/stylesheets/user.css'/>
+    <link rel='stylesheet' href='/stylesheets/slider.css'/>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="/public/javascripts/header.js"></script>
+    <script defer src="/public/javascripts/password.js"></script>
+    <script defer src="/public/javascripts/slider.js"></script>
+</head>
+<body>
+<header>
+    <%- include('user-header.ejs') %>
+</header>
+<main>
+    <div class="row">
+        <div class="col-md-12 bg-light">
+            <form action="/user/search-products/<%= id %>" method="post" id="search-form">
+                <div class="input-group rounded search">
+                    <input type="search" class="form-control rounded" name="search" placeholder="Pretraži..."
+                           aria-label="Search"
+                           aria-describedby="search-addon"/>
+                    <span class="input-group-text border-0">
+                        <i class="fa fa-search" id="search-addon"></i>
+                </span>
+                </div>
+            </form>
+            <section class="product products">
+                <div class="d-flex justify-content-end m-auto search-stores">
+                    <a href="/user/search-stores/<%= id%>">Pretraži trgovine</a>
+                </div>
+                <h2 class="product-category">Svi proizvodi</h2>
+                <button class="pre-btn"><img src="../../public/images/arrow.png" alt=""></button>
+                <button class="nxt-btn"><img src="../../public/images/arrow.png" alt=""></button>
+                <div class="product-container">
+
+                    <% allProducts.forEach(product => { %>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="<%= product.images[0].img_url%>" class="product-thumb" alt="product">
+                                <button class="card-btn"><a href="/user/product/<%= id%>/<%= product.id%>">Otvori</a></button>
+                            </div>
+                            <div class="product-info">
+                                <h2 class="product-brand"><%= product.name %></h2>
+                                <p class="product-short-description"><%= product.description.slice(0, 26)%>...</p>
+                                <span class="price"><%= product.price %>€</span>
+                            </div>
+                        </div>
+
+                    <% }) %>
+                </div>
+            </section>
+            <section class="product products">
+                <h2 class="product-category">Preporučeno</h2>
+                <button class="pre-btn"><img src="../../public/images/arrow.png" alt=""></button>
+                <button class="nxt-btn"><img src="../../public/images/arrow.png" alt=""></button>
+                <div class="product-container">
+
+                    <% recommendedProducts.forEach(product => { %>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="<%= product.images[0].img_url%>" class="product-thumb" alt="product">
+                                <button class="card-btn"><a href="/user/product/<%= id%>/<%= product.id%>">Otvori</a></button>
+                            </div>
+                            <div class="product-info">
+                                <h2 class="product-brand"><%= product.name %></h2>
+                                <p class="product-short-description">a short line about the cloth..</p>
+                                <span class="price"><%= product.price %>€</span>
+                            </div>
+                        </div>
+
+
+
+                    <% }) %>
+                </div>
+            </section>
+            <section class="product products">
+                <h2 class="product-category">Popularno</h2>
+                <button class="pre-btn"><img src="../../public/images/arrow.png" alt=""></button>
+                <button class="nxt-btn"><img src="../../public/images/arrow.png" alt=""></button>
+                <div class="product-container">
+
+                    <% popularProducts.forEach(product => { %>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="<%= product.images[0].img_url%>" class="product-thumb" alt="product">
+                                <button class="card-btn"><a href="/user/product/<%= id%>/<%= product.id%>">Otvori</a></button>
+                            </div>
+                            <div class="product-info">
+                                <h2 class="product-brand"><%= product.name %></h2>
+                                <p class="product-short-description">a short line about the cloth..</p>
+                                <span class="price"><%= product.price %>€</span>
+                            </div>
+                        </div>
+
+                    <% }) %>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+<footer>
+    <%- include('../footer.ejs') %>
+</footer>
+<script>
+    $(document).ready(() => {
+        $('#search-addon').click(() => {
+            $('#search-form').submit()
+        })
+    })
+</script>
+</body>
+</html>

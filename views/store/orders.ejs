@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Narudžbe</title>
+    <meta charset="UTF-8"/>
+    <link rel='stylesheet' href='/stylesheets/header.css'/>
+    <link rel='stylesheet' href='/stylesheets/store.css'/>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="/public/javascripts/header.js"></script>
+</head>
+<body>
+<header>
+    <%- include('store-header.ejs') %>
+</header>
+<main>
+    <div class="row">
+        <div class="position-relative">
+            <div class="toast float-end cart-toast">
+                <div class="toast-header">
+                    <strong class="me-auto">Notifikacija</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body">
+                    <p id="toast-text"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10 offset-md-1 orders-table bg-light">
+            <table class="table">
+                <tr>
+                    <th>Broj narudžbe</th>
+                    <th>Datum kreiranja</th>
+                    <th>Status</th>
+                    <th>Odobri</th>
+                    <th>Odbij</th>
+                    <th>Označi kao isporučeno</th>
+                    <th>Kontaktiraj</th>
+                </tr>
+                <% orders.forEach(order => { %>
+                <tr id="<%= order.id %>">
+                    <td><%= order.id %></td>
+                    <td><%= order.date.toLocaleDateString('en-GB') %></td>
+                    <td>
+                        <% if (order.order_status === 'pending') { %>
+                            Na čekanju
+                        <% } else if (order.order_status === 'accepted') { %>
+                            Prihvaćen
+                        <% } else { %>
+                            Isporučen
+                        <% } %>
+                    </td>
+                    <td>
+                        <% if (order.order_status === 'pending'){ %>
+                        <button class="btn btn-success" onclick="acceptOrder(<%= order.id %>)">Odobri</button>
+                        <% } %>
+                    </td>
+                    <td>
+                        <% if (order.order_status === 'pending'){ %>
+                        <button class="btn btn-danger" onclick="declineOrder(<%= order.id %>)">Odbij</button>
+                        <% } %>
+                    </td>
+                    <td>
+                        <% if (order.order_status === 'accepted'){ %>
+                        <button class="btn btn-secondary" onclick="markOrderAsDelivered(<%= order.id %>)">Isporuči
+                        </button>
+                        <% } %>
+                    </td>
+                    <td>
+                        <a href="/store/chat/<%=  id %>/<%= order.user_id %>">Kontaktiraj</a>
+                    </td>
+                </tr>
+                <% }) %>
+            </table>
+        </div>
+    </div>
+</main>
+<footer>
+    <%- include('../footer.ejs') %>
+</footer>
+<script>
+
+    const acceptOrder = id => {
+        axios.post(`/store/order/${id}/accepted`, {})
+            .then(response => {
+                if (response.status === 200) {
+                    $('#toast-text').text('Narudžba prihvaćena')
+                    $('.toast').toast('show')
+                    location.reload()
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    const declineOrder = id => {
+        axios.post(`/store/order/${id}/declined`, {})
+            .then(response => {
+                if (response.status === 200) {
+                    $('#toast-text').text('Narudžba odbijena')
+                    $('.toast').toast('show')
+                    $(`#${id}`).remove()
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    const markOrderAsDelivered = id => {
+        axios.post(`/store/order/${id}/delivered`, {})
+            .then(response => {
+                if (response.status === 200) {
+                    $('#toast-text').text('Status promijenjen u dostavljeno')
+                    $('.toast').toast('show')
+                    location.reload()
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>New product</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet' href='/stylesheets/header.css'/>
+    <link rel='stylesheet' href='/stylesheets/store.css'/>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script defer src="/public/javascripts/header.js"></script>
+</head>
+<body>
+<header>
+    <%- include('store-header.ejs')%>
+</header>
+<main>
+    <div class="row">
+        <div class="col-md-6 offset-md-3 new-product bg-light">
+            <form action="/store/new-product/<%= id%>" method="post" enctype="multipart/form-data" id="new_product">
+                <input type="text" placeholder="Naziv" class="form-control" name="name" required>
+                <textarea name="description" placeholder="Opis" maxlength="400" class="form-control" required></textarea>
+                <input type="text" placeholder="Ključne riječi" class="form-control" name="keywords" required>
+                <input type="number" placeholder="Dostupna količina" class="form-control" name="quantity" min="1">
+                <input type="number" placeholder="Cijena" class="form-control" name="price" min="0" required>
+                <label for="category" class=>Kategorije:</label>
+                <select class="form-select" id="category" name="categories" multiple required>
+                    <% for (let i = 0; i < categories.length; i++) {%>
+                        <option value="<%= categories[i].id%>">
+                            <%= categories[i].category%>
+                        </option>
+                    <%}%>
+                </select>
+                <h4>Učitaj do 3 slike:</h4>
+                <input type="file" name="img1" required/>
+                <input type="file" name="img2"/>
+                <input type="file" name="img3"/>
+                <input type="submit" class="btn btn-primary save-btn" value="Spasi">
+                <p class="alert-msg hide"></p>
+            </form>
+        </div>
+    </div>
+</main>
+<footer>
+    <%- include('../footer.ejs') %>
+</footer>
+</body>
+<script>
+
+</script>
+</html>
